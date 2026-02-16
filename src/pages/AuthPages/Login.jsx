@@ -5,17 +5,30 @@ import useAuth from "../../hooks/useAuth";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import Loading from "../../components/Loading";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const Login = () => {
     const { signIn } = useAuth();
     const { register, handleSubmit } = useForm();
     const navigate = useNavigate();
     const [pageLoading, setPageLoading] = useState(false);
+    const axiosPublic = useAxiosPublic();
     const onSubmit = async (data) => {
         try {
             setPageLoading(true);
             const res = await signIn(data.email, data.password);
             console.log(res.user);
+            const useData = {
+                name: res.user.displayName,
+                uid: res.user.uid,
+                email: res.user.email,
+                phone: res.user.phoneNumber || null,
+                photoURL: res.user.photoURL || null,
+                createdAt: res.user.metadata.creationTime,
+                lastLoginAt: res.user.metadata.lastSignInTime
+            };
+            const dbRes = await axiosPublic.patch('/api/users', useData);
+            console.log(dbRes.data);
             navigate('/');
         }
         catch (err) {

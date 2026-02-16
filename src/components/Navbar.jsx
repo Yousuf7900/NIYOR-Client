@@ -5,11 +5,11 @@ import useAuth from "../hooks/useAuth";
 const Navbar = () => {
     const { user, logOut } = useAuth();
     const navigate = useNavigate();  //temp check remove later
-    const userName = user?.displayName || "Account";
+    const userName = user?.displayName || "Tarek Zia";
 
     const handleLogout = () => {
         logOut();
-        navigate('/login');
+        navigate('/login'); // remove this when ready for production.
     };
 
     const mainLinks = [

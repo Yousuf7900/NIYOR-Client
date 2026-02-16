@@ -5,18 +5,39 @@ import useAuth from "../../hooks/useAuth";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import Loading from "../../components/Loading";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+import { updateProfile } from "firebase/auth";
 
 const Register = () => {
     const { createUser } = useAuth();
     const navigate = useNavigate();
     const { register, handleSubmit } = useForm();
     const [pageLoading, setPageLoading] = useState(false);
+    const axiosPublic = useAxiosPublic();
 
     const onSubmit = async (data) => {
         try {
             setPageLoading(true);
             const res = await createUser(data.email, data.password);
-            console.log(res.user);
+            updateProfile(res.user, {
+                displayName: data.name
+            });
+            const useData = {
+                name: res.user.displayName,
+                uid: res.user.uid,
+                email: res.user.email,
+                phone: res.user.phoneNumber || null,
+                photoURL: res.user.photoURL || null,
+                createdAt: res.user.metadata.creationTime,
+                lastLoginAt: res.user.metadata.lastSignInTime
+            };
+            axiosPublic.patch('/api/users', useData)
+                .then(res => {
+                    console.log(res.data);
+                })
+                .catch(err => {
+                    console.log(err.message);
+                })
             navigate('/');
         } catch (error) {
             console.log(error.message);
