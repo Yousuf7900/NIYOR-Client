@@ -53,6 +53,7 @@ const DashboardLayout = () => {
     const adminLinks = [
         { label: "Dashboard", to: "/dashboard/admin-home", icon: <FiGrid size={16} /> },
         { label: "Manage Products", to: "/dashboard/manage-products", icon: <FiPackage size={16} /> },
+        { label: "ADD Products", to: "/dashboard/add-products", icon: <FiPackage size={16} /> },
         { label: "Manage Orders", to: "/dashboard/manage-orders", icon: <FiShoppingCart size={16} /> },
         { label: "Manage Users", to: "/dashboard/manage-users", icon: <FiUsers size={16} /> },
         { label: "Settings", to: "/dashboard/settings", icon: <FiSettings size={16} /> },

@@ -12,17 +12,23 @@ import DashboardLayout from "../Layout/DashboardLayout";
 import MyProfile from "../pages/UserPages/MyProfile";
 import OrderHistory from "../pages/UserPages/OrderHistory";
 import AddressBook from "../pages/UserPages/AddressBook";
-import Overview from "../pages/AdminPages/Overview";
+import Overview from "../pages/AdminPages/Dashboard";
 import AddProduct from "../pages/AdminPages/AddProduct";
 import Analytics from "../pages/AdminPages/Analytics";
 import Customers from "../pages/AdminPages/Customers";
-import Orders from "../pages/AdminPages/Orders";
-import Products from "../pages/AdminPages/Products";
+import Orders from "../pages/AdminPages/ManageOrders";
+import Products from "../pages/AdminPages/ManageProducts";
 import Loading from "../components/Loading";
 import PrivateRoutes from "./PrivateRoutes";
 import Cart from "../components/Cart";
 import Checkout from "../components/Checkout";
 import OrderSuccess from "../components/OrderSuccess";
+import ManageProducts from "../pages/AdminPages/ManageProducts";
+import ManageOrders from "../pages/AdminPages/ManageOrders";
+import Dashboard from "../pages/AdminPages/Dashboard";
+import Settings from "../pages/AdminPages/Settings";
+import MyReviews from "../pages/UserPages/MyReviews";
+import OrderDetails from "../pages/UserPages/OrderDetails";
 
 const Router = createBrowserRouter([
     {
@@ -87,22 +93,30 @@ const Router = createBrowserRouter([
                 element: <MyProfile></MyProfile>
             },
             {
-                path: 'order-history',
+                path: 'my-orders',
                 element: <OrderHistory></OrderHistory>
             },
             {
                 path: 'address',
                 element: <AddressBook></AddressBook>
             },
+            {
+                path: 'my-reviews',
+                element: <MyReviews></MyReviews>
+            },
+            {
+                path: 'order-details',
+                element: <OrderDetails></OrderDetails>
+            },
 
 
             // admin based dashboard routes
             {
-                path: 'overview',
-                element: <Overview></Overview>
+                path: 'admin-home',
+                element: <Dashboard></Dashboard>
             },
             {
-                path: 'add-product',
+                path: 'add-products',
                 element: <AddProduct></AddProduct>
             },
             {
@@ -110,16 +124,20 @@ const Router = createBrowserRouter([
                 element: <Analytics></Analytics>
             },
             {
-                path: 'manage-customer',
+                path: 'manage-users',
                 element: <Customers></Customers>
             },
             {
-                path: 'orders',
-                element: <Orders></Orders>
+                path: 'manage-orders',
+                element: <ManageOrders></ManageOrders>
             },
             {
-                path: 'products',
-                element: <Products></Products>
+                path: 'manage-products',
+                element: <ManageProducts></ManageProducts>
+            },
+            {
+                path: 'settings',
+                element: <Settings></Settings>
             }
         ]
     }
