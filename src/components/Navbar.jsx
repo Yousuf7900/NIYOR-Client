@@ -1,16 +1,14 @@
 import { FiShoppingBag, FiUser, FiGrid, FiLogOut } from "react-icons/fi";
-import { NavLink, useNavigate } from "react-router";
+import { NavLink } from "react-router";
 import useAuth from "../hooks/useAuth";
+import useLogout from "../hooks/useLogOut";
 
 const Navbar = () => {
-    const { user, logOut } = useAuth();
-    const navigate = useNavigate();  //temp check remove later
+    const { user } = useAuth();
     const userName = user?.displayName || "Tarek Zia";
 
-    const handleLogout = () => {
-        logOut();
-        navigate('/login'); // remove this when ready for production.
-    };
+    const handleLogout = useLogout();
+
 
     const mainLinks = [
         { name: "Home", path: "/" },

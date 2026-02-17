@@ -5,7 +5,7 @@ import { useEffect } from "react";
 
 const axiosSecure = axios.create({
     baseURL: "http://localhost:3000",
-    // baseURL: ""  this will be used for production url.
+    // baseURL: "https://niyor-backend.vercel.app"  //this will be used for production url.
 });
 
 const useAxiosSecure = () => {
