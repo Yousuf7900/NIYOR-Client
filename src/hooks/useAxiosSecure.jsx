@@ -4,8 +4,8 @@ import useAuth from "./useAuth";
 import { useEffect } from "react";
 
 const axiosSecure = axios.create({
-    // baseURL: "http://localhost:3000",
-    baseURL: "https://niyor-backend.vercel.app"  //this will be used for production url.
+    baseURL: "http://localhost:3000",
+    //baseURL: "https://niyor-backend.vercel.app"  //this will be used for production url.
 });
 
 const useAxiosSecure = () => {
