@@ -1,4 +1,4 @@
-import { FiEdit3, FiLogOut, FiPackage, FiMapPin, FiHeart } from "react-icons/fi";
+import { FiEdit3, FiLogOut, FiPackage, FiMail, FiPhone, FiCalendar, FiClock } from "react-icons/fi";
 import { Link, useNavigate } from "react-router";
 import useAuth from "../../hooks/useAuth";
 import Loading from "../../components/Loading";
@@ -16,6 +16,14 @@ const MyProfile = () => {
 
     const memberSince = userData?.createdAt
         ? new Date(userData.createdAt).toLocaleDateString("en-BD", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        })
+        : "—";
+
+    const lastLogin = userData?.lastLoginAt
+        ? new Date(userData.lastLoginAt).toLocaleDateString("en-BD", {
             year: "numeric",
             month: "long",
             day: "numeric",
@@ -41,7 +49,7 @@ const MyProfile = () => {
                     icon: "success",
                     title: "Logged Out",
                     text: "You have been successfully logged out.",
-                    timer: 1500,
+                    timer: 1400,
                     showConfirmButton: false,
                 });
 
@@ -51,165 +59,105 @@ const MyProfile = () => {
                     icon: "error",
                     title: "Error",
                     text: err.message,
+                    confirmButtonColor: "#B08A3C",
                 });
             }
         }
     };
 
-    if (loading) {
-        return (
-            <Loading text={"Loading your account..."} />
-        );
-    }
+    if (loading) return <Loading text={"Loading your account..."} />;
 
     return (
         <div className="bg-white">
-            <div className="max-w-7xl mx-auto px-4 py-14">
+            <div className="max-w-3xl mx-auto px-4 py-14">
                 {/* Header */}
-                <div className="mb-10">
+                <div className="mb-8">
                     <h1 className="text-3xl md:text-4xl tracking-[0.25em] text-neutral-800">
                         MY ACCOUNT
                     </h1>
                     <p className="mt-3 text-[#B08A3C] tracking-[0.3em] text-sm">
                         NIYOR | নিওর
                     </p>
-                    <p className="mt-4 text-neutral-600 text-sm max-w-2xl">
-                        Manage your profile and keep delivery details updated for smooth COD orders.
+                    <p className="mt-4 text-neutral-600 text-sm max-w-xl">
+                        Update your profile details for smoother COD delivery.
                     </p>
                 </div>
 
-                <div className="grid lg:grid-cols-12 gap-8">
-                    {/* Left card */}
-                    <aside className="lg:col-span-4">
-                        <div className="border border-neutral-200 rounded-md p-6 bg-white">
-                            {/* Profile mini */}
-                            <div className="flex items-center gap-4">
-                                {/* Avatar */}
-                                <div className="w-14 h-14 rounded-full border border-[#B08A3C]/40 overflow-hidden flex items-center justify-center bg-[#B08A3C]/10 text-[#B08A3C] font-medium text-lg">
-                                    {userPhoto ? (
-                                        <img
-                                            src={userPhoto}
-                                            alt={userName}
-                                            className="w-full h-full object-cover"
-                                        />
-                                    ) : (
-                                        <span>{userName?.charAt(0).toUpperCase()}</span>
-                                    )}
+                {/* Main minimal card */}
+                <div className="border border-neutral-200 rounded-md bg-white overflow-hidden">
+                    {/* top soft section */}
+                    <div className="bg-neutral-50 border-b border-neutral-200 p-8 text-center">
+                        {/* Avatar */}
+                        <div className="mx-auto w-28 h-28 rounded-full border border-[#B08A3C]/40 bg-white overflow-hidden flex items-center justify-center">
+                            {userPhoto ? (
+                                <img
+                                    src={userPhoto}
+                                    alt={userName}
+                                    className="w-full h-full object-cover"
+                                />
+                            ) : (
+                                <div className="w-full h-full flex items-center justify-center bg-[#B08A3C]/10 text-[#B08A3C] font-semibold text-3xl">
+                                    {userName?.charAt(0).toUpperCase()}
                                 </div>
-
-                                {/* Info */}
-                                <div className="min-w-0">
-                                    <h2 className="text-neutral-800 tracking-wide font-medium truncate">
-                                        {userName}
-                                    </h2>
-                                    <p className="text-sm text-neutral-500 truncate">{userEmail}</p>
-                                </div>
-                            </div>
-
-                            {/* Info rows */}
-                            <div className="mt-6 space-y-3 text-sm">
-                                <div className="flex justify-between items-center">
-                                    <span className="text-neutral-500">Phone</span>
-                                    <span className="text-neutral-800 font-medium">
-                                        {userData?.phone || "Not provided"}
-                                    </span>
-                                </div>
-
-                                <div className="flex justify-between items-center">
-                                    <span className="text-neutral-500">Member Since</span>
-                                    <span className="text-neutral-800 font-medium">{memberSince}</span>
-                                </div>
-                            </div>
-
-                            {/* Actions */}
-                            <div className="mt-6 space-y-3">
-                                <button className="w-full px-4 py-3 text-sm tracking-wide border border-[#B08A3C] text-[#B08A3C] hover:bg-[#B08A3C] hover:text-white transition-all duration-300 rounded-md inline-flex items-center justify-center gap-2">
-                                    <FiEdit3 />
-                                    Edit Profile
-                                </button>
-
-                                <button
-                                    onClick={handleLogout}
-                                    className="w-full px-4 py-3 text-sm tracking-wide border border-neutral-200 text-neutral-700 hover:border-[#B08A3C] hover:text-[#B08A3C] transition-all duration-300 rounded-md inline-flex items-center justify-center gap-2"
-                                >
-                                    <FiLogOut />
-                                    Logout
-                                </button>
-                            </div>
-
-                            {/* Divider */}
-                            <div className="my-6 h-px bg-neutral-200" />
-
-                            {/* Quick links (only essential) */}
-                            <nav className="space-y-2">
-                                <MiniLink to="/orders" icon={<FiPackage />} label="My Orders" />
-                                <MiniLink to="/address" icon={<FiMapPin />} label="Address Book" />
-                                <MiniLink to="/wishlist" icon={<FiHeart />} label="Wishlist" />
-                            </nav>
-                        </div>
-                    </aside>
-
-                    {/* Right side */}
-                    <main className="lg:col-span-8 space-y-6">
-                        {/* Delivery reminder */}
-                        <div className="border border-neutral-200 rounded-md p-8 bg-white">
-                            <h3 className="text-lg tracking-wide text-neutral-800">
-                                Delivery Details
-                            </h3>
-                            <p className="mt-2 text-sm text-neutral-600">
-                                Add your phone and address to ensure fast COD delivery.
-                            </p>
-
-                            <div className="mt-6 grid sm:grid-cols-2 gap-4">
-                                <Link
-                                    to="/address"
-                                    className="border border-neutral-200 rounded-md p-6 hover:border-[#B08A3C] hover:shadow-sm transition-all duration-300 bg-white"
-                                >
-                                    <div className="flex items-center gap-3 text-neutral-800">
-                                        <span className="text-[#B08A3C] text-lg">
-                                            <FiMapPin />
-                                        </span>
-                                        <h4 className="text-sm tracking-wide">Update Address</h4>
-                                    </div>
-                                    <p className="mt-3 text-xs text-neutral-500">
-                                        Manage delivery location anytime
-                                    </p>
-                                </Link>
-
-                                <Link
-                                    to="/orders"
-                                    className="border border-neutral-200 rounded-md p-6 hover:border-[#B08A3C] hover:shadow-sm transition-all duration-300 bg-white"
-                                >
-                                    <div className="flex items-center gap-3 text-neutral-800">
-                                        <span className="text-[#B08A3C] text-lg">
-                                            <FiPackage />
-                                        </span>
-                                        <h4 className="text-sm tracking-wide">Track Orders</h4>
-                                    </div>
-                                    <p className="mt-3 text-xs text-neutral-500">
-                                        Check status and delivery updates
-                                    </p>
-                                </Link>
-                            </div>
-
-                            <p className="mt-6 text-sm text-neutral-500">
-                                Tip: For COD orders, we may call to confirm before shipping.
-                            </p>
+                            )}
                         </div>
 
-                        {/* Simple info card (optional, but useful) */}
-                        <div className="border border-neutral-200 rounded-md p-8 bg-white">
-                            <h3 className="text-lg tracking-wide text-neutral-800">
-                                Account Info
-                            </h3>
+                        <h2 className="mt-4 text-xl tracking-wide text-neutral-800 font-medium">
+                            {userName}
+                        </h2>
 
-                            <div className="mt-5 space-y-3 text-sm">
-                                <Row label="Name" value={userName} />
-                                <Row label="Email" value={userEmail} />
-                                <Row label="Phone" value={userData?.phone || "Not provided"} />
-                            </div>
+                        <div className="mt-2 inline-flex items-center gap-2 text-sm text-neutral-500">
+                            <FiMail className="text-neutral-400" />
+                            <span className="truncate max-w-[240px] sm:max-w-[420px]">{userEmail}</span>
                         </div>
-                    </main>
+
+                        {/* Actions */}
+                        <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+                            <Link
+                                to={`/dashboard/profile/edit`}
+                                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm rounded-md bg-[#B08A3C] text-white hover:opacity-95 transition"
+                            >
+                                <FiEdit3 />
+                                Edit Profile
+                            </Link>
+
+                            <button
+                                onClick={handleLogout}
+                                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm rounded-md border border-neutral-200 text-neutral-700 hover:border-[#B08A3C] hover:text-[#B08A3C] transition"
+                            >
+                                <FiLogOut />
+                                Logout
+                            </button>
+                        </div>
+
+                        {/* Simple secondary link */}
+                        <div className="mt-5">
+                            <Link
+                                to="/orders"
+                                className="inline-flex items-center justify-center gap-2 text-sm text-neutral-600 hover:text-[#B08A3C] transition"
+                            >
+                                <FiPackage />
+                                View My Orders
+                            </Link>
+                        </div>
+                    </div>
+
+                    {/* Info section */}
+                    <div className="p-8">
+                        <p className="text-xs tracking-[0.25em] text-neutral-500">
+                            PROFILE INFO
+                        </p>
+
+                        <div className="mt-5 divide-y divide-neutral-200 border border-neutral-200 rounded-md overflow-hidden">
+                            <InfoRow icon={<FiPhone />} label="Phone" value={userData?.phone || "Not provided"} />
+                            <InfoRow icon={<FiCalendar />} label="Member Since" value={memberSince} />
+                            <InfoRow icon={<FiClock />} label="Last Login" value={lastLogin} />
+                        </div>
+
+                        <p className="mt-5 text-xs text-neutral-400">
+                            Tip: Keep your phone updated so we can confirm COD delivery quickly.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -218,21 +166,18 @@ const MyProfile = () => {
 
 export default MyProfile;
 
-/* ---------- Small UI components ---------- */
+/* ---------- UI ---------- */
 
-const MiniLink = ({ to, icon, label }) => (
-    <Link
-        to={to}
-        className="flex items-center gap-3 px-4 py-3 rounded-md border border-neutral-200 text-sm text-neutral-700 hover:border-[#B08A3C] hover:text-[#B08A3C] transition-colors"
-    >
-        <span className="text-[#B08A3C]">{icon}</span>
-        <span>{label}</span>
-    </Link>
-);
-
-const Row = ({ label, value }) => (
-    <div className="flex items-center justify-between gap-4">
-        <span className="text-neutral-500">{label}</span>
-        <span className="text-neutral-800 font-medium truncate">{value}</span>
+const InfoRow = ({ icon, label, value }) => (
+    <div className="flex items-center justify-between gap-4 px-5 py-4 bg-white">
+        <div className="flex items-center gap-3 min-w-0">
+            <span className="w-9 h-9 rounded-md border border-neutral-200 bg-neutral-50 flex items-center justify-center text-[#B08A3C]">
+                {icon}
+            </span>
+            <div className="min-w-0">
+                <p className="text-sm text-neutral-700 font-medium">{label}</p>
+                <p className="text-xs text-neutral-500 truncate">{value}</p>
+            </div>
+        </div>
     </div>
 );

@@ -31,6 +31,7 @@ import MyReviews from "../pages/UserPages/MyReviews";
 import OrderDetails from "../pages/UserPages/OrderDetails";
 import AdminProductDetails from "../pages/AdminPages/AdminProductDetails";
 import UpdateProductDetails from "../pages/AdminPages/UpdateProductDetails";
+import EditProfile from "../pages/UserPages/EditProfile";
 
 const Router = createBrowserRouter([
     {
@@ -109,6 +110,10 @@ const Router = createBrowserRouter([
             {
                 path: 'order-details',
                 element: <OrderDetails></OrderDetails>
+            },
+            {
+                path: 'profile/edit',
+                element: <EditProfile></EditProfile>
             },
 
 
