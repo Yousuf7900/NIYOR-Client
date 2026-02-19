@@ -9,54 +9,19 @@ import {
     FiEye,
     FiEyeOff,
 } from "react-icons/fi";
+import { Link } from "react-router";
+import useProducts from "../../hooks/useProducts";
 
 const ManageProducts = () => {
-    // UI-only dummy data (replace later)
-    const products = useMemo(
-        () => [
-            {
-                _id: "p1",
-                name: "Classic White Panjabi",
-                sku: "NIY-001",
-                price: 2890,
-                stock: 24,
-                status: "published", // published | draft
-                category: "Panjabi",
-                createdAt: "Mon, 16 Feb 2026 17:37:48 GMT",
-                image: "https://images.unsplash.com/photo-1520975958225-f6be86f20f63?auto=format&fit=crop&w=400&q=60",
-            },
-            {
-                _id: "p2",
-                name: "Olive Heritage Panjabi",
-                sku: "NIY-002",
-                price: 3190,
-                stock: 0,
-                status: "draft",
-                category: "Panjabi",
-                createdAt: "Tue, 17 Feb 2026 10:21:00 GMT",
-                image: "https://images.unsplash.com/photo-1520975693411-8f8a7f23e6b6?auto=format&fit=crop&w=400&q=60",
-            },
-            {
-                _id: "p3",
-                name: "Premium Cotton Shirt",
-                sku: "NIY-101",
-                price: 1990,
-                stock: 12,
-                status: "published",
-                category: "Shirt",
-                createdAt: "Tue, 17 Feb 2026 12:44:00 GMT",
-                image: "https://images.unsplash.com/photo-1520975911189-07f9b4d0d8e6?auto=format&fit=crop&w=400&q=60",
-            },
-        ],
-        []
-    );
+    const [products] = useProducts();
+    const productsList = products;
 
     // UI-only filters
     const [tab, setTab] = useState("all"); // all | published | draft | low
     const [q, setQ] = useState("");
 
     const filtered = useMemo(() => {
-        let list = [...products];
+        let list = [...productsList];
 
         if (tab === "published") list = list.filter((p) => p.status === "published");
         if (tab === "draft") list = list.filter((p) => p.status === "draft");
@@ -73,7 +38,7 @@ const ManageProducts = () => {
         }
 
         return list;
-    }, [products, tab, q]);
+    }, [productsList, tab, q]);
 
     return (
         <div className="bg-white">
@@ -103,13 +68,13 @@ const ManageProducts = () => {
                         </div>
 
                         {/* Add product */}
-                        <button
+                        <Link to={'/dashboard/add-products'}
                             type="button"
                             className="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm rounded-md bg-[#B08A3C] text-white hover:opacity-95 transition"
                         >
                             <FiPlus />
                             Add Product
-                        </button>
+                        </Link>
                     </div>
                 </div>
 

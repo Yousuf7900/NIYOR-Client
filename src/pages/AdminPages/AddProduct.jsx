@@ -4,12 +4,14 @@ import { FiImage, FiUploadCloud, FiX } from "react-icons/fi";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router";
 
 const AddProduct = () => {
     const { register, handleSubmit, reset, setValue, watch } = useForm();
     const Image_API = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_API}`;
     const axiosPublic = useAxiosPublic();
     const axiosSecure = useAxiosSecure();
+    const navigate = useNavigate();
 
     const sizes = watch("sizes") || [];
 
@@ -43,6 +45,19 @@ const AddProduct = () => {
     };
 
     const onSubmit = async (data) => {
+        const showLoading = () => {
+            Swal.fire({
+                title: "Please wait...",
+                text: "Uploading images and creating product.",
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: false,
+                confirmButtonColor: "#B08A3C",
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+        };
 
         // Cover image required
         if (!data.first?.[0]) {
@@ -129,6 +144,7 @@ const AddProduct = () => {
         }
 
         console.log(data);
+        showLoading();
 
         const files = [
             data.first?.[0],
@@ -187,13 +203,37 @@ const AddProduct = () => {
         try {
             const result = await axiosSecure.post('/api/products', product);
             console.log("✅ Product created successfully:", result.data);
+            Swal.close();
 
             Swal.fire({
                 icon: "success",
-                title: "Product added!",
-                text: "Product created successfully.",
+                title: "Product Added Successfully ✨",
+                text: "Your product has been created and saved.",
+                showCancelButton: true,
+                showDenyButton: true,
+                confirmButtonText: "Add More",
+                denyButtonText: "Manage Products",
+                cancelButtonText: "Go to Shop",
                 confirmButtonColor: "#B08A3C",
+                denyButtonColor: "#1F2937",
+                cancelButtonColor: "#6B7280",
+                customClass: {
+                    popup: "rounded-lg",
+                    actions: "swal-actions-compact",
+                    confirmButton: "swal-btn",
+                    denyButton: "swal-btn-outline",
+                    cancelButton: "swal-btn-light"
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    reset();
+                } else if (result.isDenied) {
+                    navigate("/dashboard/manage-products");
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    navigate("/shop");
+                }
             });
+
 
             clearAll();
         } catch (error) {
