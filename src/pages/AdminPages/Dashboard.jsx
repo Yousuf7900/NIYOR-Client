@@ -7,18 +7,11 @@ import {
   FiTrendingUp,
   FiAlertCircle,
 } from "react-icons/fi";
+import useProducts from "../../hooks/useProducts";
 
 const Dashboard = () => {
-  // Dummy UI data
-  const stats = useMemo(
-    () => ({
-      revenue: 128900,
-      orders: 86,
-      customers: 54,
-      products: 32,
-    }),
-    []
-  );
+  const [products] = useProducts();
+  const stats = products;
 
   const recentOrders = useMemo(
     () => [
@@ -57,7 +50,7 @@ const Dashboard = () => {
           />
           <StatCard
             title="Total Orders"
-            value={stats.orders}
+            value={stats.price}
             icon={<FiShoppingBag />}
           />
           <StatCard
@@ -67,7 +60,7 @@ const Dashboard = () => {
           />
           <StatCard
             title="Products"
-            value={stats.products}
+            value={stats.length}
             icon={<FiPackage />}
           />
         </div>
@@ -197,9 +190,8 @@ const StatusBadge = ({ status }) => {
 
   return (
     <span
-      className={`text-xs px-3 py-1 rounded-full border tracking-wide ${
-        map[status] || "border-neutral-200 text-neutral-700"
-      }`}
+      className={`text-xs px-3 py-1 rounded-full border tracking-wide ${map[status] || "border-neutral-200 text-neutral-700"
+        }`}
     >
       {status}
     </span>

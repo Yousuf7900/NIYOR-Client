@@ -29,6 +29,8 @@ import Dashboard from "../pages/AdminPages/Dashboard";
 import Settings from "../pages/AdminPages/Settings";
 import MyReviews from "../pages/UserPages/MyReviews";
 import OrderDetails from "../pages/UserPages/OrderDetails";
+import AdminProductDetails from "../pages/AdminPages/AdminProductDetails";
+import UpdateProductDetails from "../pages/AdminPages/UpdateProductDetails";
 
 const Router = createBrowserRouter([
     {
@@ -138,6 +140,14 @@ const Router = createBrowserRouter([
             {
                 path: 'settings',
                 element: <Settings></Settings>
+            },
+            {
+                path: 'manage-products/:id',
+                element: <AdminProductDetails></AdminProductDetails>
+            },
+            {
+                path: 'edit-product/:id',
+                element: <UpdateProductDetails></UpdateProductDetails>
             }
         ]
     }
